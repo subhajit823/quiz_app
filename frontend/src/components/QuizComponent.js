@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 
+const API_URL = "https://quiz-app-mu-liard.vercel.app/api";
+
 const questions = [
   {
     question: "What is the capital of France?",
@@ -51,7 +53,7 @@ class QuizComponent extends React.Component {
 
   fetchLeaderboard() {
     axios
-      .get("http://localhost:3001/scores")
+      .get(`${API_URL}/scores`)
       .then((res) => {
         console.log("Fetched leaderboard:", res.data);
         this.setState({ leaderboard: res.data });
@@ -103,7 +105,7 @@ class QuizComponent extends React.Component {
     if (this.state.showScore && !this.state.scoreSent) {
       const { username, score } = this.state;
       axios
-        .post("http://localhost:3001/score", {
+        .post(`${API_URL}/score`, {
           username,
           score,
         })
