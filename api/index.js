@@ -2,17 +2,21 @@ const express = require("express");
 const mongoose = require("mongoose");
 const dotenv = require("dotenv");
 const cors = require("cors");
-const Score = require('./models/scores');
+const Score = require('../backend/models/scores');
 
 dotenv.config();
 
 const app = express();
 
-app.use(express.json());
-app.use(cors({
-  origin: 'http://localhost:3000',
+// Configure CORS for both local development and Vercel deployment
+const corsOptions = {
+  // Use Vercel's environment variables to determine the correct origin
+  origin: process.env.NODE_ENV === 'production' ? 'https://quiz-app-mu-liard.vercel.app' : 'http://localhost:3000',
   methods: ['GET', 'POST'],
-}));
+};
+
+app.use(express.json());
+app.use(cors(corsOptions));
 
 mongoose
   .connect(
@@ -55,6 +59,7 @@ app.get('/scores', async (req, res) => {
   }
 });
 
-app.listen(3001, () => {
-  console.log("Quiz server running at http://localhost:3001/");
-});
+// The key change for Vercel deployment!
+// You must remove app.listen() and instead export the app
+// Vercel will handle the server start for you
+module.exports = app;
