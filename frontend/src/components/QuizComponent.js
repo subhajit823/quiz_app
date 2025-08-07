@@ -48,6 +48,7 @@ class QuizComponent extends React.Component {
   }
 
   componentDidMount() {
+    this.setState({ leaderboard: [] });
     this.fetchLeaderboard();
   }
 
